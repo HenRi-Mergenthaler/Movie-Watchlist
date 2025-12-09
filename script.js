@@ -1,13 +1,28 @@
 const mainEl = document.querySelector("main")
-const searchBtn = document.getElementById("search-btn")
 const searchInput = document.getElementById("search-input")
 const btnLoading = document.getElementById("btn-loading")
 const btnText = document.getElementById("btn-text")
+const btnWatchlist = document.getElementById("btn-watchlist")
 
 const apiKey = "1408e952"
 
-searchBtn.addEventListener("click", e => {
-    searchFilm(searchInput.value)
+
+
+document.addEventListener("click", e => {
+    if(e.target.closest("#search-btn")) {
+        searchFilm(searchInput.value)
+    }
+    else if(e.target.closest(".watch-button")) {
+        const btn = e.target.closest(".watch-button")
+        console.log(btn.dataset.imdbid)
+        if(!hasSavedFilm(btn.dataset.imdbid)) {
+            saveFilm(btn.dataset.imdbid)
+            btn.innerHTML = "<strong>Remove<strong>"
+        } else {
+            removeFilm(btn.dataset.imdbid)
+            btn.innerHTML = `<img src="/imgs/cruz.png" alt=""> Watchlist`
+        }
+    }
 })
 
 async function searchFilm(searchStr) {
@@ -39,6 +54,8 @@ async function renderResults(data) {
         const res = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&i=${film.imdbID}`)
         const filmData = await res.json()
 
+        const btnHtml = hasSavedFilm(filmData.imdbID) ? `<button data-imdbid="${filmData.imdbID}" class="film-itens-details watch-button"><strong>Remove</strong></button>` : `<button data-imdbid="${filmData.imdbID}" class="film-itens-details watch-button"><img src="/imgs/cruz.png" alt=""> Watchlist</button>`
+        
         htmlSnp += `
         <div class="film-item-div">
             <img class="film-image"src="${filmData.Poster}" alt="">
@@ -46,11 +63,11 @@ async function renderResults(data) {
                 <div class="film-tite-div">
                     <h3>${filmData.Title}</h3>
                     <img class="star" src="imgs/star.png" alt="">
-                    <p>${filmData.Ratings[0].Value}</p>
+                    <p>${filmData.Ratings?.[0]?.Value || "0.0/10"}</p>
                 </div>
                 <p>${filmData.Runtime}</p>
                 <p class="film-itens-details">${filmData.Genre}</p>
-                <button class="film-itens-details watch-button"><img src="/imgs/cruz.png" alt=""> Watchlist</button>
+                ${btnHtml}
                 <p class="film-description">${filmData.Plot}</p>
             </div>
         </div>
@@ -59,4 +76,27 @@ async function renderResults(data) {
 
     mainEl.style.justifyContent = "start"
     mainEl.innerHTML = htmlSnp
+}
+
+// watchlist save system
+
+function hasSavedFilm(imdbID) {
+    const arr = JSON.parse(localStorage.getItem("watchlist") || "[]")
+    return arr.includes(imdbID)
+}
+
+function saveFilm(imdbID) {
+    if (!hasSavedFilm(imdbID)) {
+        const arr = JSON.parse(localStorage.getItem("watchlist") || "[]")
+        arr.push(imdbID)
+        localStorage.setItem("watchlist", JSON.stringify(arr))
+    }
+}
+
+function removeFilm(imdbID) {
+    if(hasSavedFilm(imdbID)){
+        const arr = JSON.parse(localStorage.getItem("watchlist"))
+        arr.splice(arr.indexOf(imdbID), 1)
+        localStorage.setItem("watchlist", JSON.stringify(arr))
+    }
 }
