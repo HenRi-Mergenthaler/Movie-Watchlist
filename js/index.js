@@ -8,8 +8,6 @@ const btnWatchlist = document.getElementById("btn-watchlist")
 
 const apiKey = "1408e952"
 
-
-
 document.addEventListener("click", e => {
     if(e.target.closest("#search-btn")) {
         searchFilm(searchInput.value)

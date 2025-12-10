@@ -1,5 +1,4 @@
 // watchlist save system
-
 export function hasSavedFilm(imdbID) {
     const arr = JSON.parse(localStorage.getItem("watchlist") || "[]")
     return arr.includes(imdbID)

@@ -28,7 +28,6 @@ async function getWatchlist() {
     renderResults(dataArr)
 }
 
-
 function renderResults(data) {
     let htmlSnp = ""
     if(data.length > 0) {
