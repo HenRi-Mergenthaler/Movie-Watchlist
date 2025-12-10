@@ -181,6 +181,19 @@ main {
     transition: all 0.3s;
 }
 
+.remove-button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.remove-button:hover {
+    transform: scale(1.05);
+    transition: all 0.3s;
+}
+
 .watch-button img {
     margin-right: 3px;
     transform: translateY(3px);

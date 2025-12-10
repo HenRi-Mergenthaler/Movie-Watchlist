@@ -1,3 +1,5 @@
+import { hasSavedFilm, removeFilm, saveFilm } from "./saveSys.js"
+
 const mainEl = document.querySelector("main")
 const searchInput = document.getElementById("search-input")
 const btnLoading = document.getElementById("btn-loading")
@@ -76,27 +78,4 @@ async function renderResults(data) {
 
     mainEl.style.justifyContent = "start"
     mainEl.innerHTML = htmlSnp
-}
-
-// watchlist save system
-
-function hasSavedFilm(imdbID) {
-    const arr = JSON.parse(localStorage.getItem("watchlist") || "[]")
-    return arr.includes(imdbID)
-}
-
-function saveFilm(imdbID) {
-    if (!hasSavedFilm(imdbID)) {
-        const arr = JSON.parse(localStorage.getItem("watchlist") || "[]")
-        arr.push(imdbID)
-        localStorage.setItem("watchlist", JSON.stringify(arr))
-    }
-}
-
-function removeFilm(imdbID) {
-    if(hasSavedFilm(imdbID)){
-        const arr = JSON.parse(localStorage.getItem("watchlist"))
-        arr.splice(arr.indexOf(imdbID), 1)
-        localStorage.setItem("watchlist", JSON.stringify(arr))
-    }
 }
