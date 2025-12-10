@@ -18,7 +18,7 @@ async function getWatchlist() {
     const dataArr = []
     for (const e of watchlistArr) {
         try {
-            const res = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&i=${e}`)
+            const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${e}`)
             const data = await res.json()
             dataArr.push(data)
         } catch (err) {

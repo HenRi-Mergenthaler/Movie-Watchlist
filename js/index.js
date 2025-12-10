@@ -29,7 +29,7 @@ async function searchFilm(searchStr) {
     btnLoading.classList.toggle("disabled")
     btnText.classList.toggle("disabled")
     try {
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&s=${searchStr}`)
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${searchStr}`)
         const data = await res.json()
         
         await renderResults(data)
@@ -51,7 +51,7 @@ async function renderResults(data) {
 
     let htmlSnp = ""
     for (const film of data.Search) {
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&i=${film.imdbID}`)
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${film.imdbID}`)
         const filmData = await res.json()
 
         const btnHtml = hasSavedFilm(filmData.imdbID) ? `<button data-imdbid="${filmData.imdbID}" class="film-itens-details watch-button"><strong>Remove</strong></button>` : `<button data-imdbid="${filmData.imdbID}" class="film-itens-details watch-button"><img src="/imgs/cruz.png" alt=""> Watchlist</button>`
